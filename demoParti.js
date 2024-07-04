@@ -93,4 +93,17 @@ function startQuiz() {
             });
 
             const submitButton = document.createElement('button');
-            submitButton
+            submitButton.textContent = 'Submit Quiz';
+            submitButton.onclick = function () {
+                questions.forEach((q, index) => {
+                    const selectedAnswer = document.querySelector(`input[name="question${index}"]:checked`);
+                    if (selectedAnswer && selectedAnswer.value === q.correctAnswer) {
+                        score++;
+                    }
+                });
+
+                const scoreContainer = document.getElementById('score-container');
+                scoreContainer.innerHTML = `Your score is ${score} out of 10.`;
+            };
+            quizContainer.appendChild(submitButton);
+        }
