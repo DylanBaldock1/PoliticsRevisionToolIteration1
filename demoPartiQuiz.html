@@ -116,6 +116,10 @@
 
                 const scoreContainer = document.getElementById('score-container');
                 scoreContainer.innerHTML = `Your score is ${score} out of 10.`;
+
+                if (score < 7) {
+                    scoreContainer.innerHTML = `You scored less than 7. You should reuse the Study Mode to get your knowledge up to shape!`;
+                }
             };
             quizContainer.appendChild(submitButton);
         }
