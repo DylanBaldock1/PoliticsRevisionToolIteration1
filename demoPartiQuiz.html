@@ -115,11 +115,13 @@
                 });
 
                 const scoreContainer = document.getElementById('score-container');
-                scoreContainer.innerHTML = `Your score is ${score} out of 10.`;
+                scoreContainer.innerHTML = `Your score is ${score} out of 10. You are getting the hand of it - well done!`;
 
                 if (score < 7) {
-                    scoreContainer.innerHTML = `You scored less than 7. You should reuse the Study Mode to get your knowledge up to shape!`;
+                    scoreContainer.innerHTML = `You scored ${score}. You should reuse the Study Mode to get your knowledge up to shape!`;
                 }
+                else if (score = 10) {
+                    scoreContainer.innerHTML = `You scored 10/10! You have mastered Democracy and Participation!`;
             };
             quizContainer.appendChild(submitButton);
         }
