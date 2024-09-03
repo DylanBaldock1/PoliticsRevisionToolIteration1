@@ -112,6 +112,9 @@
                     if (selectedAnswer && selectedAnswer.value === q.correctAnswer) {
                         score++;
                     }
+                    else if (selectedAnswer && selectedAnswer.value != q.correctAnswer) {
+                        
+                    }
                 });
 
                 const scoreContainer = document.getElementById('score-container');
