@@ -131,9 +131,9 @@
                     scoreContainer.innerHTML = `You scored 10/10! You have mastered Democracy and Participation!`;
                 }
 
-                function wrongAnswersMode() {
-                    document.getElementById('test').innterHTML = wrongAnswers;
-                };
+                const wrongAnsContain = document.getElementById('wrong-answers-container');
+                wrongAnsContain.innterHTML = wrongAnswers;
+                
                 
             };
             quizContainer.appendChild(submitButton);
