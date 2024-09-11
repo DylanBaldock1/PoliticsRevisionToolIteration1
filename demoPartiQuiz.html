@@ -116,8 +116,8 @@
                         score++;
                     }
                     else if (selectedAnswer && selectedAnswer.value != q.correctAnswer) {
-                        const wrong = wrongAnswers();
-                        wrongAnswersArr.push(question);
+                        const wrong = wrongAnswers;
+                        wrong.push(question);
                     }
                 });
 
@@ -132,8 +132,7 @@
                 }
 
                 function wrongAnswersMode() {
-                    for (i = 0; i < wrongAnswers.length; i++)
-                    document.writeln((i+1) + ": " + array[i]);
+                    document.getElementById('test').innterHTML = wrongAnswers;
                 };
                 
             };
