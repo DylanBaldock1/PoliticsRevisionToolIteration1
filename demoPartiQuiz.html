@@ -8,6 +8,8 @@
 
     <div id="quiz-container"></div>
     <div id="score-container"></div>
+    <div id="wrong-answers-container">
+    <div id="test">
 
     <script>
         const wrongAnswers = []
@@ -114,7 +116,7 @@
                         score++;
                     }
                     else if (selectedAnswer && selectedAnswer.value != q.correctAnswer) {
-                        
+                        wrongAnswers.push(question);
                     }
                 });
 
@@ -127,6 +129,9 @@
                 else if (score = 10) {
                     scoreContainer.innerHTML = `You scored 10/10! You have mastered Democracy and Participation!`;
                 }
+
+                const testOutput = document.getElementById('test');
+                testOutput.innerHTML = wrongAnswers();
             };
             quizContainer.appendChild(submitButton);
         }
