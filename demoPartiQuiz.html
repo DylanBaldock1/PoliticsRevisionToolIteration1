@@ -116,13 +116,13 @@
                         score++;
                     }
                     else if (selectedAnswer && selectedAnswer.value != q.correctAnswer) {
-                        const wrongAnswersArr = wrongAnswers();
-                        wrongAnswersArr.push(question)
+                        const wrong = wrongAnswers();
+                        wrongAnswersArr.push(question);
                     }
                 });
 
                 const scoreContainer = document.getElementById('score-container');
-                scoreContainer.innerHTML = `Your score is ${score} out of 10. You are getting the hand of it - well done!`;
+                scoreContainer.innerHTML = `Your score is ${score} out of 10. You are getting the hang of it - well done!`;
 
                 if (score < 7) {
                     scoreContainer.innerHTML = `You scored ${score}. You should reuse the Study Mode to get your knowledge up to shape!`;
@@ -131,8 +131,11 @@
                     scoreContainer.innerHTML = `You scored 10/10! You have mastered Democracy and Participation!`;
                 }
 
-                const testOutput = document.getElementById('test');
-                testOutput.innerHTML = wrongAnswers();
+                function wrongAnswersMode() {
+                    for (i = 0; i < wrongAnswers.length; i++)
+                    document.writeln((i+1) + ": " + array[i]);
+                };
+                
             };
             quizContainer.appendChild(submitButton);
         }
