@@ -116,7 +116,8 @@
                         score++;
                     }
                     else if (selectedAnswer && selectedAnswer.value != q.correctAnswer) {
-                        wrongAnswers.push(question);
+                        const wrongAnswersArr = wrongAnswers();
+                        wrongAnswersArr.push(question)
                     }
                 });
 
