@@ -92,7 +92,6 @@
 
         function startQuiz() {
             const questions = randomlySelectQuestions();
-            let score = 0;
             const quizContainer = document.getElementById('quiz-container');
             quizContainer.innerHTML = '';
 
@@ -110,6 +109,7 @@
             const submitButton = document.createElement('button');
             submitButton.textContent = 'Submit Quiz';
             submitButton.onclick = function () {
+                let score = 0;
                 questions.forEach((q, index) => {
                     const selectedAnswer = document.querySelector(`input[name="question${index}"]:checked`);
                     if (selectedAnswer && selectedAnswer.value === q.correctAnswer) {
