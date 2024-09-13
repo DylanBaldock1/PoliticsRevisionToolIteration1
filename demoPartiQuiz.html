@@ -4,14 +4,15 @@
     <title>Quiz</title>
 </head>
 <body>
-    <button onclick="startQuiz()">Start Quiz</button>
+    //creates the button to start the function startQuiz() 
+    <button onclick="startQuiz()">Start Quiz</button> 
 
-    <div id="quiz-container"></div>
+    <div id="quiz-container"></div> //creates the text containers 
     <div id="score-container"></div>
     <div id="wrong-answers-container"></div>
 
     <script>
-        const wrongAnswers = [];
+        const wrongAnswers = []; //creates array for wrong answers to go into
         const questionsAndAnswers = [
             { question: "What is direct democracy?", answer: "All citizens express their opinions themselves." },
             { question: "What is one advantage of direct democracy?", answer: "Gives equal weight to all votes." },
