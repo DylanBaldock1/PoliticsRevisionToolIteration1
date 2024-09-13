@@ -12,6 +12,7 @@
     <div id="wrong-answers-container"></div>
 
     <script>
+        const wrongAnswers = []; //creates array for wrong answers to go into
         const questionsAndAnswers = [
             { question: "What is direct democracy?", answer: "All citizens express their opinions themselves." },
             { question: "What is one advantage of direct democracy?", answer: "Gives equal weight to all votes." },
@@ -90,7 +91,6 @@
         }
 
         function startQuiz() { //function startQuiz() allows for all the questions to be outputted, all the answers to be checked and the score to be outputted. 
-            const wrongAnswers = []; //creates array for wrong answers to go into
             const questions = randomlySelectQuestions(); //calls back the random questions selected
             const quizContainer = document.getElementById('quiz-container'); //output container
             quizContainer.innerHTML = '';
@@ -109,6 +109,9 @@
             const submitButton = document.createElement('button'); //this const alows for the answers to be checked and confirmed. 
             submitButton.textContent = 'Submit Quiz';
             submitButton.onclick = function () {
+                while(wrongAnswers.length > 0) {
+                    wrongAnswers.pop();
+                }
                 let score = 0;
                 questions.forEach((q, index) => {
                     const selectedAnswer = document.querySelector(`input[name="question${index}"]:checked`);
