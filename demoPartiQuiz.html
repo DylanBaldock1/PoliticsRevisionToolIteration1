@@ -123,9 +123,6 @@
 
                 const scoreContainer = document.getElementById('score-container');
                 scoreContainer.innerHTML = `Your score is ${score} out of 10. You are getting the hang of it - well done!`;
-
-                const wrongAnsContain = document.getElementById('wrong-answers-container');
-                wrongAnsContain.innterHTML = wrongAnswers;
                 
                 if (score < 7) {
                     scoreContainer.innerHTML = `You scored ${score}. You should reuse the Study Mode to get your knowledge up to shape!`;
@@ -133,7 +130,7 @@
                 else if (score = 10) {
                     scoreContainer.innerHTML = `You scored 10/10! You have mastered Democracy and Participation!`;
                 }
-                
+                document.getElementById("wrong-answers-container").innerHTML = wrongAnswers.toString();
                 
             };
             quizContainer.appendChild(submitButton);
