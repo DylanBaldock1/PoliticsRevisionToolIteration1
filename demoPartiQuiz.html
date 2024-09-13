@@ -66,7 +66,7 @@
             { question: "What example illustrates dishonest behavior by MPs?", answer: "The 2009 Daily Telegraph published evidence of widespread abuse of the expenses system by MPs." }
         ];
 
-        function randomlySelectQuestions() {
+        function randomlySelectQuestions() { //created function that randomly selects the questions from the array and the answers attached to this. 
             const selectedQuestions = [];
             const usedIndexes = new Set();
 
@@ -87,11 +87,11 @@
                 }
             }
 
-            return selectedQuestions;
+            return selectedQuestions; //allows for the array to be returned so that it can be used in startQuiz()
         }
 
-        function startQuiz() {
-            const questions = randomlySelectQuestions();
+        function startQuiz() { //function startQuiz() allows for all the questions to be outputted, all the answers to be checked and the score to be outputted. 
+            const questions = randomlySelectQuestions(); 
             const quizContainer = document.getElementById('quiz-container');
             quizContainer.innerHTML = '';
 
@@ -106,7 +106,7 @@
                 quizContainer.appendChild(questionDiv);
             });
 
-            const submitButton = document.createElement('button');
+            const submitButton = document.createElement('button'); //this const alows for the answers to be checked and confirmed. 
             submitButton.textContent = 'Submit Quiz';
             submitButton.onclick = function () {
                 let score = 0;
@@ -117,7 +117,7 @@
                     }
                     else if (selectedAnswer && selectedAnswer.value != q.correctAnswer) {
                         const wrong = wrongAnswers;
-                        wrong.push(index+1);
+                        wrong.push(index+1); //puts all the incorrect answers into a new array as their question numbers
                     }
                 });
 
