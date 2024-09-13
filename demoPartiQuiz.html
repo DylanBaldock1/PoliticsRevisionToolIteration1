@@ -9,7 +9,6 @@
     <div id="quiz-container"></div>
     <div id="score-container"></div>
     <div id="wrong-answers-container"></div>
-    <div id="test"></div>
 
     <script>
         const wrongAnswers = [];
@@ -70,7 +69,7 @@
             const selectedQuestions = [];
             const usedIndexes = new Set();
 
-            while (selectedQuestions.length < 20) {
+            while (selectedQuestions.length < 10) {
                 const randomIndex = Math.floor(Math.random() * questionsAndAnswers.length);
                 if (!usedIndexes.has(randomIndex)) {
                     usedIndexes.add(randomIndex);
@@ -117,17 +116,17 @@
                     }
                     else if (selectedAnswer && selectedAnswer.value != q.correctAnswer) {
                         const wrong = wrongAnswers;
-                        wrong.push(index);
+                        wrong.push(selectedQuestions[index]);
                     }
                 });
 
                 const scoreContainer = document.getElementById('score-container');
-                scoreContainer.innerHTML = `Your score is ${score} out of 20. You are getting the hang of it - well done!`;
+                scoreContainer.innerHTML = `Your score is ${score} out of 10. You are getting the hang of it - well done!`;
                 
-                if (score < 15) {
+                if (score < 7) {
                     scoreContainer.innerHTML = `You scored ${score}. You should reuse the Study Mode to get your knowledge up to shape!`;
                 }
-                else if (score = 19 or score = 20) {
+                else if (score = 10) {
                     scoreContainer.innerHTML = `You scored ${score}/20! You have mastered Democracy and Participation - well done!`;
                 }
                 document.getElementById("wrong-answers-container").innerHTML = wrongAnswers.toString();
