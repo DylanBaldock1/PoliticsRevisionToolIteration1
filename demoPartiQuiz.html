@@ -116,7 +116,7 @@
                     }
                     else if (selectedAnswer && selectedAnswer.value != q.correctAnswer) {
                         const wrong = wrongAnswers;
-                        wrong.push(index);
+                        wrong.push(index+1);
                     }
                 });
 
@@ -129,7 +129,7 @@
                 else if (score == 19 || score == 20) {
                     scoreContainer.innerHTML = `You scored ${score}/20! You have mastered Democracy and Participation - well done!`;
                 }
-                document.getElementById("wrong-answers-container").innerHTML = 'Here are all the question numbers you got wrong:' wrongAnswers.toString()+1;
+                document.getElementById("wrong-answers-container").innerHTML = 'Here are all the question numbers you got wrong:' wrongAnswers.toString();
                 
             };
             quizContainer.appendChild(submitButton);
