@@ -141,7 +141,7 @@ This should display all the questions, and verify the answers. It will also outp
                     scoreContainer.innerHTML = `You scored ${score}/20! You have mastered Democracy and Participation - well done!`;
                 }
                 if (wrongAnswers.length != 0) {
-                document.getElementById("wrong-answers-container").innerHTML = 'Here are all the question numbers you got wrong: ' + wrongAnswers.toString();
+                document.getElementById("wrong-answers-container").innerHTML = 'Here are the numbers of the questions you got incorrect: ' + wrongAnswers.toString();
                 }
             };
             quizContainer.appendChild(submitButton);
