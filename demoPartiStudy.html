@@ -1,3 +1,9 @@
+<!--
+This is the overview page for the Study Mode for Demoracy and Participation 
+Dylan Baldock, last updated 16.09.24
+This should display all the questions, and verify the answers. It will also display study notes. 
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,11 +33,11 @@
         <div class="quiz-section">
             <button onclick="startQuiz()">Start Study Mode</button>
 
-            <div id="quiz-container"></div>
+            <div id="quiz-container"></div> 
             <div id="score-container"></div>
 
             <script>
-                const questionsAndAnswers = [
+                const questionsAndAnswers = [ //initialise the questions and answers array
                     { question: "What is direct democracy?", answer: "All citizens express their opinions themselves." },
                     { question: "What is one advantage of direct democracy?", answer: "Gives equal weight to all votes." },
                     { question: "How does direct democracy encourage political involvement?", answer: "It encourages participation in politics." },
@@ -84,7 +90,7 @@
                     { question: "What example illustrates dishonest behavior by MPs?", answer: "The 2009 Daily Telegraph published evidence of widespread abuse of the expenses system by MPs." }
                 ];
 
-                function randomlySelectQuestions() {
+                function randomlySelectQuestions() { //randonly select 10 questions are store them in a new array with the answers
                     const selectedQuestions = [];
                     const usedIndexes = new Set();
 
@@ -108,7 +114,7 @@
                     return selectedQuestions;
                 }
 
-                function startQuiz() {
+                function startQuiz() { //starts the quiz and will output all of these questions
                     const questions = randomlySelectQuestions();
                     const quizContainer = document.getElementById('quiz-container');
                     quizContainer.innerHTML = '';
@@ -143,7 +149,7 @@
             </script>
         </div>
 
-        <div class="notes">
+        <div class="notes"> <!-- Displays the study notes and the div class puts it to the right of the screen. -->
              <h1>Specification: </h1>
   <ul>
         <li>The features of direct democracy and representative democracy.</li>
