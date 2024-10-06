@@ -13,12 +13,13 @@ This should display all the questions, and verify the answers. It will also outp
     
     <button onclick="startQuiz()">Start Quiz</button> 
 
-    <div id="quiz-container"></div> 
+    <div style="display: inline-block; vertical-align: top; width: 50%;" id="quiz-container"></div> 
+    <div style="display: inline-block; vertical-align: top; width: 50%;" id="wrong-answers-container"></div>
     <div id="score-container"></div>
-    <div id="wrong-answers-container"></div>
 
     <script>
-        const wrongAnswers = []; //creates array for wrong answers to go into
+        const wrongAnswers = []; // Array for wrong answers
+        const correctAnswers = []; // Array for correct answers
         const questionsAndAnswers = [
             { question: "What is direct democracy?", answer: "All citizens express their opinions themselves." },
             { question: "What is one advantage of direct democracy?", answer: "Gives equal weight to all votes." },
@@ -72,7 +73,7 @@ This should display all the questions, and verify the answers. It will also outp
             { question: "What example illustrates dishonest behavior by MPs?", answer: "The 2009 Daily Telegraph published evidence of widespread abuse of the expenses system by MPs." }
         ];
 
-        function randomlySelectQuestions() { //created function that randomly selects the questions from the array and the answers attached to this. 
+        function randomlySelectQuestions() {
             const selectedQuestions = [];
             const usedIndexes = new Set();
 
@@ -93,12 +94,12 @@ This should display all the questions, and verify the answers. It will also outp
                 }
             }
 
-            return selectedQuestions; //allows for the array to be returned so that it can be used in startQuiz()
+            return selectedQuestions;
         }
 
-        function startQuiz() { //function startQuiz() allows for all the questions to be outputted, all the answers to be checked and the score to be outputted. 
-            const questions = randomlySelectQuestions(); //calls back the random questions selected
-            const quizContainer = document.getElementById('quiz-container'); //output container
+        function startQuiz() {
+            const questions = randomlySelectQuestions();
+            const quizContainer = document.getElementById('quiz-container');
             quizContainer.innerHTML = '';
 
             questions.forEach((q, index) => {
@@ -112,39 +113,55 @@ This should display all the questions, and verify the answers. It will also outp
                 quizContainer.appendChild(questionDiv);
             });
 
-            const submitButton = document.createElement('button'); //this const alows for the answers to be checked and confirmed. 
+            const submitButton = document.createElement('button');
             submitButton.textContent = 'Submit Quiz';
             submitButton.onclick = function () {
-                while(wrongAnswers.length > 0) {
-                    wrongAnswers.pop();
-                }
+                wrongAnswers.length = 0; // Clear wrong answers array
+                correctAnswers.length = 0; // Clear correct answers array
                 let score = 0;
+
                 questions.forEach((q, index) => {
                     const selectedAnswer = document.querySelector(`input[name="question${index}"]:checked`);
                     if (selectedAnswer && selectedAnswer.value === q.correctAnswer) {
                         score++;
-                    }
-                    else if (selectedAnswer && selectedAnswer.value != q.correctAnswer) {
-                        
-                        const wrong = wrongAnswers;
-                        wrong.push(index+1); //puts all the incorrect answers into a new array as their question numbers
+                        correctAnswers.push(index + 1); // Store question number in correctAnswers array
+                    } else if (selectedAnswer) {
+                        wrongAnswers.push(index + 1); // Store question number in wrongAnswers array
                     }
                 });
 
                 const scoreContainer = document.getElementById('score-container');
-                scoreContainer.innerHTML = `Your score is ${score} out of 20. You are getting the hang of it - well done!`;
-                
+                scoreContainer.innerHTML = `Your score is ${score} out of 20.`;
+
                 if (score < 15) {
-                    scoreContainer.innerHTML = `You scored ${score}. You should reuse the Study Mode to get your knowledge up to shape!`;
+                    scoreContainer.innerHTML += ` You should reuse the Study Mode to improve your knowledge.`;
+                } else if (score === 20) {
+                    scoreContainer.innerHTML += ` Congratulations! You've mastered Democracy and Participation.`;
+                } else {
+                    scoreContainer.innerHTML += ` You are getting the hang of it - well done!`;
                 }
-                else if (score == 19 || score == 20) {
-                    scoreContainer.innerHTML = `You scored ${score}/20! You have mastered Democracy and Participation - well done!`;
-                }
-                if (wrongAnswers.length != 0) {
-                document.getElementById("wrong-answers-container").innerHTML = 'Here are the numbers of the questions you got incorrect: ' + wrongAnswers.toString();
-                }
+
+                displayWrongAnswers(); // Display wrong answers
             };
+
             quizContainer.appendChild(submitButton);
+        }
+
+        function displayWrongAnswers() {
+            const wrongAnswersContainer = document.getElementById('wrong-answers-container');
+            wrongAnswersContainer.innerHTML = '';
+
+            if (wrongAnswers.length > 0) {
+                const wrongAnswersList = document.createElement('ul');
+                wrongAnswers.forEach((questionNumber) => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `Question ${questionNumber}`;
+                    wrongAnswersList.appendChild(listItem);
+                });
+                wrongAnswersContainer.appendChild(wrongAnswersList);
+            } else {
+                wrongAnswersContainer.textContent = 'No wrong answers.';
+            }
         }
     </script>
 </body>
