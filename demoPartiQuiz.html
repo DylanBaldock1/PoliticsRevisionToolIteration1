@@ -8,19 +8,36 @@ This should display all the questions, and verify the answers. It will also outp
 <html lang="en">
 <head>
     <title>Quiz</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .column {
+            width: 45%;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
     
     <button onclick="startQuiz()">Start Quiz</button> 
 
-    <div style="display: inline-block; vertical-align: top; width: 50%;" id="quiz-container"></div> 
-    <div style="display: inline-block; vertical-align: top; width: 50%;" id="wrong-answers-container"></div>
+    <div class="container">
+        <div class="column" id="quiz-container"></div> 
+        <div class="column" id="wrong-answers-container">
+            <h3>Retest Incorrect Answers</h3>
+        </div>
+    </div>
     <div id="score-container"></div>
 
     <script>
         const wrongAnswers = []; // Array for wrong answers
         const correctAnswers = []; // Array for correct answers
+        let incorrectQuestions = []; // Tracks incorrect questions to be retested
+
         const questionsAndAnswers = [
+            const questionsAndAnswers = [
             { question: "What is direct democracy?", answer: "All citizens express their opinions themselves." },
             { question: "What is one advantage of direct democracy?", answer: "Gives equal weight to all votes." },
             { question: "How does direct democracy encourage political involvement?", answer: "It encourages participation in politics." },
@@ -89,7 +106,8 @@ This should display all the questions, and verify the answers. It will also outp
                     selectedQuestions.push({
                         question: questionsAndAnswers[randomIndex].question,
                         correctAnswer,
-                        answers
+                        answers,
+                        index: randomIndex
                     });
                 }
             }
@@ -116,32 +134,23 @@ This should display all the questions, and verify the answers. It will also outp
             const submitButton = document.createElement('button');
             submitButton.textContent = 'Submit Quiz';
             submitButton.onclick = function () {
-                wrongAnswers.length = 0; // Clear wrong answers array
-                correctAnswers.length = 0; // Clear correct answers array
+                wrongAnswers.length = 0;
                 let score = 0;
 
                 questions.forEach((q, index) => {
                     const selectedAnswer = document.querySelector(`input[name="question${index}"]:checked`);
                     if (selectedAnswer && selectedAnswer.value === q.correctAnswer) {
                         score++;
-                        correctAnswers.push(index + 1); // Store question number in correctAnswers array
+                        correctAnswers.push(q.question); // Move correct answers to correctAnswers array
                     } else if (selectedAnswer) {
-                        wrongAnswers.push(index + 1); // Store question number in wrongAnswers array
+                        wrongAnswers.push(q); // Store wrong questions for retesting
                     }
                 });
 
                 const scoreContainer = document.getElementById('score-container');
                 scoreContainer.innerHTML = `Your score is ${score} out of 20.`;
-
-                if (score < 15) {
-                    scoreContainer.innerHTML += ` You should reuse the Study Mode to improve your knowledge.`;
-                } else if (score === 20) {
-                    scoreContainer.innerHTML += ` Congratulations! You've mastered Democracy and Participation.`;
-                } else {
-                    scoreContainer.innerHTML += ` You are getting the hang of it - well done!`;
-                }
-
-                displayWrongAnswers(); // Display wrong answers
+                
+                displayWrongAnswers(); // Display wrong answers for retesting
             };
 
             quizContainer.appendChild(submitButton);
@@ -149,20 +158,49 @@ This should display all the questions, and verify the answers. It will also outp
 
         function displayWrongAnswers() {
             const wrongAnswersContainer = document.getElementById('wrong-answers-container');
-            wrongAnswersContainer.innerHTML = '';
+            wrongAnswersContainer.innerHTML = '<h3>Retest Incorrect Answers</h3>';
 
             if (wrongAnswers.length > 0) {
-                const wrongAnswersList = document.createElement('ul');
-                wrongAnswers.forEach((questionNumber) => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = `Question ${questionNumber}`;
-                    wrongAnswersList.appendChild(listItem);
+                incorrectQuestions = wrongAnswers; // Set incorrectQuestions for retesting
+                incorrectQuestions.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
+                    q.answers.forEach((answer, i) => {
+                        const answerDiv = document.createElement('div');
+                        answerDiv.innerHTML = `<input type="radio" name="retryQuestion${index}" value="${answer}"> ${answer}`;
+                        questionDiv.appendChild(answerDiv);
+                    });
+
+                    const retryButton = document.createElement('button');
+                    retryButton.textContent = 'Submit Retest';
+                    retryButton.onclick = function () {
+                        checkRetryAnswers(index, q);
+                    };
+
+                    questionDiv.appendChild(retryButton);
+                    wrongAnswersContainer.appendChild(questionDiv);
                 });
-                wrongAnswersContainer.appendChild(wrongAnswersList);
+            }
+        }
+
+        function checkRetryAnswers(retryIndex, question) {
+            const selectedAnswer = document.querySelector(`input[name="retryQuestion${retryIndex}"]:checked`);
+
+            if (selectedAnswer && selectedAnswer.value === question.correctAnswer) {
+                correctAnswers.push(question.question); // Move correct answers to correctAnswers array
+
+                // Remove the correctly answered question from incorrectQuestions and update display
+                incorrectQuestions = incorrectQuestions.filter(q => q.question !== question.question);
+                if (incorrectQuestions.length === 0) {
+                    document.getElementById('wrong-answers-container').innerHTML = '<h3>All incorrect answers have been corrected!</h3>';
+                } else {
+                    displayWrongAnswers(); // Re-display the remaining incorrect questions
+                }
             } else {
-                wrongAnswersContainer.textContent = 'No wrong answers.';
+                alert('Incorrect answer. Please try again!');
             }
         }
     </script>
 </body>
 </html>
+
