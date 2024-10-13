@@ -37,7 +37,6 @@ This should display all the questions, and verify the answers. It will also outp
         let incorrectQuestions = []; // Tracks incorrect questions to be retested
 
         const questionsAndAnswers = [
-            const questionsAndAnswers = [
             { question: "What is direct democracy?", answer: "All citizens express their opinions themselves." },
             { question: "What is one advantage of direct democracy?", answer: "Gives equal weight to all votes." },
             { question: "How does direct democracy encourage political involvement?", answer: "It encourages participation in politics." },
@@ -89,6 +88,7 @@ This should display all the questions, and verify the answers. It will also outp
             { question: "What factor helps explain declining turnout and increased interest in alternative political activities?", answer: "The generally negative public perception of politicians." },
             { question: "What example illustrates dishonest behavior by MPs?", answer: "The 2009 Daily Telegraph published evidence of widespread abuse of the expenses system by MPs." }
         ];
+
 
         function randomlySelectQuestions() {
             const selectedQuestions = [];
@@ -161,8 +161,7 @@ This should display all the questions, and verify the answers. It will also outp
             wrongAnswersContainer.innerHTML = '<h3>Retest Incorrect Answers</h3>';
 
             if (wrongAnswers.length > 0) {
-                incorrectQuestions = wrongAnswers; // Set incorrectQuestions for retesting
-                incorrectQuestions.forEach((q, index) => {
+                wrongAnswers.forEach((q, index) => {
                     const questionDiv = document.createElement('div');
                     questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
                     q.answers.forEach((answer, i) => {
@@ -189,12 +188,12 @@ This should display all the questions, and verify the answers. It will also outp
             if (selectedAnswer && selectedAnswer.value === question.correctAnswer) {
                 correctAnswers.push(question.question); // Move correct answers to correctAnswers array
 
-                // Remove the correctly answered question from incorrectQuestions and update display
-                incorrectQuestions = incorrectQuestions.filter(q => q.question !== question.question);
-                if (incorrectQuestions.length === 0) {
+                // Remove the correctly answered question from wrongAnswers and update display
+                wrongAnswers.splice(retryIndex, 1); // Remove the correct question
+                displayWrongAnswers(); // Update display with remaining incorrect questions
+
+                if (wrongAnswers.length === 0) {
                     document.getElementById('wrong-answers-container').innerHTML = '<h3>All incorrect answers have been corrected!</h3>';
-                } else {
-                    displayWrongAnswers(); // Re-display the remaining incorrect questions
                 }
             } else {
                 alert('Incorrect answer. Please try again!');
@@ -203,4 +202,3 @@ This should display all the questions, and verify the answers. It will also outp
     </script>
 </body>
 </html>
-
