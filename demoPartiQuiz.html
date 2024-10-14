@@ -32,6 +32,7 @@ This should display all the questions, and verify the answers. It will also outp
     <div id="score-container"></div>
 
     <script>
+        var dingSound = new Audio('ding-126626.mp3');
         const wrongAnswers = []; // Array for wrong answers
         const correctAnswers = []; // Array for correct answers
         let incorrectQuestions = []; // Tracks incorrect questions to be retested
@@ -148,7 +149,20 @@ This should display all the questions, and verify the answers. It will also outp
                 });
 
                 const scoreContainer = document.getElementById('score-container');
-                scoreContainer.innerHTML = `Your score is ${score} out of 20.`;
+                scoreContainer.innerHTML = `Your score is ${score} out of 20. You are getting the hang of it - well done!`;
+                
+                if (score < 15) {
+                    scoreContainer.innerHTML = `You scored ${score}. You should reuse the Study Mode to get your knowledge up to shape!`;
+                }
+                else if (score == 19 || score == 20) {
+                    scoreContainer.innerHTML = `You scored ${score}/20! You have mastered Democracy and Participation - well done!`;
+                    dingSound.play();
+                }
+                if (wrongAnswers.length != 0) {
+                document.getElementById("wrong-answers-container").innerHTML = 'Here are the numbers of the questions you got incorrect: ' + wrongAnswers.toString();
+                }
+            
+
                 
                 displayWrongAnswers(); // Display wrong answers for retesting
             };
