@@ -33,6 +33,7 @@ This should display all the questions, and verify the answers. It will also outp
 
     <script>
         var dingSound = new Audio('ding-126626.mp3');
+        var buzzSound = new Audio('error-3-125761.mp3');
         const wrongAnswers = []; // Array for wrong answers
         const correctAnswers = []; // Array for correct answers
         let incorrectQuestions = []; // Tracks incorrect questions to be retested
@@ -153,6 +154,7 @@ This should display all the questions, and verify the answers. It will also outp
                 
                 if (score < 15) {
                     scoreContainer.innerHTML = `You scored ${score}. You should reuse the Study Mode to get your knowledge up to shape!`;
+                    buzzSound.play();
                 }
                 else if (score == 19 || score == 20) {
                     scoreContainer.innerHTML = `You scored ${score}/20! You have mastered Democracy and Participation - well done!`;
