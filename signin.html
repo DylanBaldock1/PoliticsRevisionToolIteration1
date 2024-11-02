@@ -50,7 +50,6 @@
 <div class="container">
     <h2 id="formTitle">Sign In</h2>
 
-    <!-- Sign In Form -->
     <div id="signInForm">
         <input type="text" id="signInUsername" placeholder="Username" required>
         <input type="password" id="signInPassword" placeholder="Password" required>
@@ -58,7 +57,6 @@
         <p>Don't have an account? <span id="toggleFormLink" onclick="toggleForm()">Create one</span></p>
     </div>
 
-    <!-- Create Account Form -->
     <div id="createAccountForm" style="display: none;">
         <input type="text" id="firstName" placeholder="First Name" required>
         <input type="text" id="createUsername" placeholder="Username" required>
@@ -69,7 +67,52 @@
 </div>
 
 <script>
-    // Toggle between Sign In and Create Account forms
+    const githubUsername = "your-github-username";
+    const repoName = "your-repo-name";
+    const filePath = "path/to/your-file.json"; // JSON file to store user data
+    const githubToken = "your-github-token"; // GitHub token with write access
+
+    async function fetchUserData() {
+        const url = `https://api.github.com/repos/${githubUsername}/${repoName}/contents/${filePath}`;
+        const response = await fetch(url, {
+            headers: {
+                'Authorization': `token ${githubToken}`
+            }
+        });
+        const data = await response.json();
+        const fileContent = atob(data.content);
+        return JSON.parse(fileContent);
+    }
+
+    async function saveUserData(users) {
+        const url = `https://api.github.com/repos/${githubUsername}/${repoName}/contents/${filePath}`;
+        const fileContent = btoa(JSON.stringify(users, null, 2));
+
+        await fetch(url, {
+            method: "PUT",
+            headers: {
+                'Authorization': `token ${githubToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: "Update user data",
+                content: fileContent,
+                sha: await getFileSha() // Get the latest file SHA
+            })
+        });
+    }
+
+    async function getFileSha() {
+        const url = `https://api.github.com/repos/${githubUsername}/${repoName}/contents/${filePath}`;
+        const response = await fetch(url, {
+            headers: {
+                'Authorization': `token ${githubToken}`
+            }
+        });
+        const data = await response.json();
+        return data.sha;
+    }
+
     function toggleForm() {
         const signInForm = document.getElementById("signInForm");
         const createAccountForm = document.getElementById("createAccountForm");
@@ -86,53 +129,39 @@
         }
     }
 
-    // Retrieve stored users or initialize an empty array
-    const getUsers = () => JSON.parse(localStorage.getItem("users")) || [];
-
-    // Save users to localStorage
-    const saveUsers = (users) => {
-        localStorage.setItem("users", JSON.stringify(users));
-    };
-
-    // Create a new account
-    function createAccount() {
+    async function createAccount() {
         const firstName = document.getElementById("firstName").value;
         const username = document.getElementById("createUsername").value;
         const password = document.getElementById("createPassword").value;
 
         if (firstName && username && password) {
-            const users = getUsers();
-            
-            // Check if username is already taken
+            const users = await fetchUserData();
+
             if (users.some(user => user.username === username)) {
                 alert("Username already taken. Please choose another.");
                 return;
             }
 
-            // Add new user to users array and save to localStorage
             users.push({ firstName, username, password });
-            saveUsers(users);
+            await saveUserData(users);
 
             alert("Account created successfully! Please sign in.");
-            toggleForm(); // Switch to Sign In form
+            toggleForm();
         } else {
             alert("Please fill out all fields.");
         }
     }
 
-    // Sign in with existing account
-    function signIn() {
+    async function signIn() {
         const username = document.getElementById("signInUsername").value;
         const password = document.getElementById("signInPassword").value;
-        const users = getUsers();
+        const users = await fetchUserData();
 
-        // Find matching user
         const user = users.find(user => user.username === username && user.password === password);
 
         if (user) {
             alert(`Welcome back, ${user.firstName}!`);
-            // Redirect to main page or display success message
-            window.location.href = "index.html"; // Update this with your main page URL
+            window.location.href = "main.html";
         } else {
             alert("Incorrect username or password. Please try again.");
         }
