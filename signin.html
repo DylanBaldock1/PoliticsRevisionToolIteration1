@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In or Create Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #toggleFormLink {
+            color: blue;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 id="formTitle">Sign In</h2>
+
+    <!-- Sign In Form -->
+    <div id="signInForm">
+        <input type="text" id="signInUsername" placeholder="Username" required>
+        <input type="password" id="signInPassword" placeholder="Password" required>
+        <button onclick="signIn()">Sign In</button>
+        <p>Don't have an account? <span id="toggleFormLink" onclick="toggleForm()">Create one</span></p>
+    </div>
+
+    <!-- Create Account Form -->
+    <div id="createAccountForm" style="display: none;">
+        <input type="text" id="firstName" placeholder="First Name" required>
+        <input type="text" id="createUsername" placeholder="Username" required>
+        <input type="password" id="createPassword" placeholder="Password" required>
+        <button onclick="createAccount()">Create Account</button>
+        <p>Already have an account? <span id="toggleFormLink" onclick="toggleForm()">Sign in</span></p>
+    </div>
+</div>
+
+<script>
+    // Toggle between Sign In and Create Account forms
+    function toggleForm() {
+        const signInForm = document.getElementById("signInForm");
+        const createAccountForm = document.getElementById("createAccountForm");
+        const formTitle = document.getElementById("formTitle");
+
+        if (signInForm.style.display === "none") {
+            signInForm.style.display = "block";
+            createAccountForm.style.display = "none";
+            formTitle.textContent = "Sign In";
+        } else {
+            signInForm.style.display = "none";
+            createAccountForm.style.display = "block";
+            formTitle.textContent = "Create Account";
+        }
+    }
+
+    // Retrieve stored users or initialize an empty array
+    const getUsers = () => JSON.parse(localStorage.getItem("users")) || [];
+
+    // Save users to localStorage
+    const saveUsers = (users) => {
+        localStorage.setItem("users", JSON.stringify(users));
+    };
+
+    // Create a new account
+    function createAccount() {
+        const firstName = document.getElementById("firstName").value;
+        const username = document.getElementById("createUsername").value;
+        const password = document.getElementById("createPassword").value;
+
+        if (firstName && username && password) {
+            const users = getUsers();
+            
+            // Check if username is already taken
+            if (users.some(user => user.username === username)) {
+                alert("Username already taken. Please choose another.");
+                return;
+            }
+
+            // Add new user to users array and save to localStorage
+            users.push({ firstName, username, password });
+            saveUsers(users);
+
+            alert("Account created successfully! Please sign in.");
+            toggleForm(); // Switch to Sign In form
+        } else {
+            alert("Please fill out all fields.");
+        }
+    }
+
+    // Sign in with existing account
+    function signIn() {
+        const username = document.getElementById("signInUsername").value;
+        const password = document.getElementById("signInPassword").value;
+        const users = getUsers();
+
+        // Find matching user
+        const user = users.find(user => user.username === username && user.password === password);
+
+        if (user) {
+            alert(`Welcome back, ${user.firstName}!`);
+            // Redirect to main page or display success message
+            window.location.href = "index.html"; // Update this with your main page URL
+        } else {
+            alert("Incorrect username or password. Please try again.");
+        }
+    }
+</script>
+
+</body>
+</html>
