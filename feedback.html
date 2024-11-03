@@ -18,8 +18,6 @@
             const message = document.getElementById("message").value;
 
             emailjs.send("service_9di1hnr", "template_vivvaws", { //did have to use google to learn how to initialize
-                from_email: email,
-                feedback_type: feedbackType,
                 message: message
             })
             .then((response) => {
