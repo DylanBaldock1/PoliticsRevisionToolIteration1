@@ -89,6 +89,8 @@
 
             <div id="quiz-container"></div> 
             <div id="score-container"></div>
+            <button onclick="downloadPDF()">Download Results as PDF</button>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
             <script>
                 // Function to set the view mode
@@ -178,6 +180,32 @@ function startQuiz() {
     quizContainer.appendChild(submitButton);
 }
 
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(18);
+            doc.text('Quiz Results: Baseline Quiz', 10, 10);
+            doc.setFontSize(12);
+            doc.text(`Score: ${correctAnswers.length} out of 20`, 10, 20);
+
+            doc.text('Correct Answers:', 10, 30);
+            correctAnswers.forEach((question, i) => {
+                doc.text(`${i + 1}. ${question}`, 10, 40 + (i * 10));
+            });
+
+            if (wrongAnswers.length > 0) {
+                doc.addPage();
+                doc.setFontSize(18);
+                doc.text('Incorrect Answers for Retest', 10, 10);
+
+                wrongAnswers.forEach((q, i) => {
+                    doc.text(`${i + 1}. ${q.question}`, 10, 20 + (i * 10));
+                });
+            }
+
+            doc.save('quiz_results.pdf');
+        }
             </script>
         </div>
 
