@@ -120,32 +120,14 @@ const baselineQuiz = [
 ];
 
 // randomly shuffles the questions
-function randomlySelectQuestions() {
-    const selectedQuestions = [];
-    const usedIndexes = new Set();
+                let correctAnswers = [];
+                let wrongAnswers = [];
 
-    // Use all questions in the array or the quiz
-    while (selectedQuestions.length < baselineQuiz.length) {
-        const randomIndex = Math.floor(Math.random() * baselineQuiz.length);
-        if (!usedIndexes.has(randomIndex)) {
-            usedIndexes.add(randomIndex);
-            const correctAnswer = baselineQuiz[randomIndex].answer;
-            const allAnswers = baselineQuiz.map(qa => qa.answer);
-            const incorrectAnswers = allAnswers.filter(answer => answer !== correctAnswer);
-            const shuffledIncorrectAnswers = incorrectAnswers.sort(() => 0.5 - Math.random()).slice(0, 3);
-            const answers = [correctAnswer, ...shuffledIncorrectAnswers].sort(() => 0.5 - Math.random());
-            selectedQuestions.push({
-                question: baselineQuiz[randomIndex].question,
-                correctAnswer,
-                answers
-            });
-        }
-    }
+                function randomlySelectQuestions() {
+                    return baselineQuiz;  // Use all questions
+                }
 
-    return selectedQuestions;
-}
-
-/ function startQuiz() {
+                function startQuiz() {
                     const questions = randomlySelectQuestions();
                     const quizContainer = document.getElementById('quiz-container');
                     quizContainer.innerHTML = '';
