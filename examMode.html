@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baseline Quiz</title>
+    <style>
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .view-toggle button {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 5px;
+            font-size: 1em;
+        }
+
+        /* Default View (Normal) */
+        body.normal {
+            background-color: white;
+            color: black;
+        }
+
+        /* Dark View */
+        body.dark {
+            background-color: #333;
+            color: white;
+        }
+
+        /* Dyslexia-Friendly View */
+        body.dyslexia-friendly {
+            background-color: #44d8d9;
+            color: black;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; 
+            gap: 20px; 
+        }
+        .quiz-section {
+            flex: 1;
+        }
+        .notes {
+            flex: 1; 
+            background-color: #f0f0f0; 
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav">
+            <a href="main.html">Home</a>
+            <a href="index.html">Sign Out</a>
+        </div>
+        <div class="view-toggle">
+            <button onclick="setView('normal')">Normal</button>
+            <button onclick="setView('dark')">Dark</button>
+            <button onclick="setView('dyslexia-friendly')">Dyslexia Friendly</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="quiz-section">
+            <button onclick="startExam()">Start Exam Mode</button>
+            <div id="quiz-container"></div> 
+            <div id="score-container"></div>
+            <button onclick="downloadPDF()">Download Results as PDF</button>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+            <script>
+                function setView(mode) {
+                    document.body.className = mode;
+                }
+
+                const examQuiz = [
+                    {question: "What is the definition of democracy?", answer: "A system of government where citizens exercise power by voting."},
+                    {question: "What is direct democracy?", answer: "A form of democracy where citizens directly participate in decision-making, rather than through elected representatives."},
+                    {question: "What is representative democracy?", answer: "A form of democracy where citizens elect representatives to make decisions on their behalf."},
+                    {question: "What is the main difference between direct and representative democracy?", answer: "Direct democracy involves direct citizen participation in decisions, while representative democracy involves electing representatives to make decisions."},
+                    {question: "Define political participation.", answer: "The ways in which citizens engage in the political process, such as voting, joining political parties, and activism."},
+                    {question: "What is a referendum?", answer: "A vote in which the electorate can express a view on a specific issue of public policy."},
+                    {question: "What are pressure groups?", answer: "Organized groups that seek to influence government policy or public opinion without seeking election themselves."},
+                    {question: "What is the main purpose of political parties?", answer: "To represent the interests of their members, influence policy, and gain power by winning elections."},
+                    {question: "What is a manifesto?", answer: "A public declaration of a political party's policies and aims, usually released before an election."},
+                    {question: "What does 'first-past-the-post' mean in electoral systems?", answer: "An electoral system where the candidate with the most votes in a constituency wins the seat."},
+                    {question: "What are the main disadvantages of first-past-the-post?", answer: "It can lead to a lack of proportionality, wasted votes, and encourages tactical voting."},
+                    {question: "What is proportional representation?", answer: "An electoral system in which seats are allocated in proportion to the number of votes each party receives."},
+                    {question: "What is a coalition government?", answer: "A government formed by two or more parties working together, typically when no party has an outright majority."},
+                    {question: "Define suffrage.", answer: "The right to vote in political elections."},
+                    {question: "What is voter turnout?", answer: "The percentage of eligible voters who cast a ballot in an election."},
+                    {question: "What is political apathy?", answer: "Lack of interest or concern in political activities, often leading to low voter turnout."},
+                    {question: "What is the role of the Electoral Commission in the UK?", answer: "To oversee elections, ensure fairness, and regulate political finance in the UK."},
+                    {question: "What is the significance of the 1832 Reform Act in UK history?", answer: "It expanded the electorate by lowering property requirements, marking a step towards broader suffrage."},
+                    {question: "What is civil liberties?", answer: "Basic rights and freedoms guaranteed to individuals, typically protected by law."},
+                    {question: "What does 'pluralism' mean in the context of democracy?", answer: "A system where multiple groups, opinions, and political parties coexist, allowing for a variety of viewpoints and interests."},
+                    {question: "What is the role of the House of Commons?", answer: "The elected body in the UK Parliament responsible for making and passing laws."},
+                    {question: "What is the role of the House of Lords?", answer: "The appointed chamber of the UK Parliament, which revises laws and scrutinizes the actions of the government."},
+                    {question: "What is the role of the judiciary?", answer: "To interpret laws, ensure justice, and uphold the rule of law."},
+                    {question: "What is political socialization?", answer: "The process by which individuals learn and develop their political attitudes, values, and beliefs."},
+                    {question: "What is a political party?", answer: "An organized group of people with shared political beliefs and aims, seeking to influence government policy."},
+                    {question: "What is the difference between a party manifesto and a political platform?", answer: "A manifesto is a document published by a political party outlining its policies, while a platform is the collection of policies a party supports."},
+                    {question: "What is the function of an election?", answer: "To allow citizens to choose their representatives and decide on public policies."},
+                    {question: "What is the concept of 'checks and balances'?", answer: "A system where different branches of government have powers that limit and balance each other to prevent abuse of power."},
+                    {question: "What is the meaning of 'separation of powers'?", answer: "The division of government responsibilities into distinct branches to prevent any one branch from gaining too much power."},
+                    {question: "What is the role of the opposition in a democracy?", answer: "To scrutinize the government's actions, propose alternative policies, and hold the government accountable."},
+                    {question: "What is a 'safe seat' in elections?", answer: "A parliamentary seat that is likely to be won by a particular party due to the support of a large proportion of voters in that constituency."},
+                    {question: "What is an electoral mandate?", answer: "The authority granted to a government by the electorate to carry out its policies."},
+                    {question: "What is the principle of majority rule?", answer: "A decision-making process where the option that has the most support among participants is chosen."},
+                    {question: "What is the difference between a general election and a by-election?", answer: "A general election is held to elect members of a legislative body, while a by-election is held to fill a vacancy caused by the resignation or death of an elected official."},
+                    {question: "What is the function of a political lobby?", answer: "A group or individual that seeks to influence the decisions of lawmakers and government officials."},
+                    {question: "What is a petition in the context of political participation?", answer: "A formal request, signed by many people, for the government to take action on a specific issue."},
+                    {question: "What is the importance of public opinion in a democracy?", answer: "Public opinion helps shape policies, influence politicians, and ensure that the government represents the interests of the people."},
+                    {question: "What is direct action?", answer: "When individuals or groups take action outside the usual political channels, such as protests or strikes, to achieve political goals."},
+                    {question: "What is civil disobedience?", answer: "The act of disobeying laws as a form of non-violent protest against perceived injustices."},
+                    {question: "What is political accountability?", answer: "The requirement that elected officials answer to their constituents for their actions and decisions."},
+                    {question: "What is the role of mass media in democracy?", answer: "To inform the public, shape political opinions, and act as a check on government power."},
+                    {question: "What is the concept of political culture?", answer: "The shared values, beliefs, and attitudes about politics that shape how a society behaves politically."},
+                    {question: "What are interest groups?", answer: "Organized groups that seek to influence government policy in favor of their interests."},
+                    {question: "What is a policy agenda?", answer: "A set of issues that are given priority by policymakers and political leaders."},
+                    {question: "What does 'partisan politics' mean?", answer: "Political decisions, actions, and policies that are strongly aligned with the interests of a particular political party."},
+                    {question: "What is the role of elections in a democratic society?", answer: "To provide citizens with a means of choosing their representatives and expressing their preferences on public issues."},
+                    {question: "What is meant by 'voter suppression'?", answer: "Any attempt to discourage or prevent certain groups of people from voting."},
+                    {question: "What is the purpose of political campaigns?", answer: "To persuade voters to support a candidate or party and to raise awareness of political issues."},
+                    {question: "What is political ideology?", answer: "A set of beliefs and values that guide political behavior and decision-making."},
+                    {question: "What is a majoritarian system?", answer: "An electoral system where the candidate with the most votes wins, regardless of whether they have an overall majority."},
+                    {question: "What does 'representational democracy' mean?", answer: "A system of democracy where citizens elect representatives to make decisions on their behalf."},
+                    {question: "What is the role of the Prime Minister in the UK?", answer: "The head of government who leads the executive branch, makes policy decisions, and represents the country internationally."},
+                    {question: "What is the role of the monarch in the UK?", answer: "The ceremonial head of state who represents continuity and tradition, but has limited political power."},
+                    {question: "What are the key characteristics of a liberal democracy?", answer: "Free and fair elections, political pluralism, protection of individual rights, and rule of law."}
+                ];
+
+                let correctAnswers = [];
+                let wrongAnswers = [];
+
+                function randomlySelectQuestions() {
+                    return examQuiz;  
+                }
+
+                function startExam() {
+                    const questions = randomlySelectQuestions();
+                    const quizContainer = document.getElementById('quiz-container');
+                    quizContainer.innerHTML = '';
+
+                    questions.forEach((q, index) => {
+                        const questionDiv = document.createElement('div');
+                        questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
+
+                        // Generate three incorrect answers randomly
+                        const incorrectAnswers = examQuiz
+                            .filter(item => item.answer !== q.answer) 
+                            .map(item => item.answer)
+                            .sort(() => 0.5 - Math.random())
+                            .slice(0, 3); 
+
+                        const answerOptions = [q.answer, ...incorrectAnswers].sort(() => 0.5 - Math.random());
+
+                        answerOptions.forEach((answer) => {
+                            const answerDiv = document.createElement('div');
+                            answerDiv.innerHTML = `<input type="radio" name="question${index}" value="${answer}"> ${answer}`;
+                            questionDiv.appendChild(answerDiv);
+                        });
+                        quizContainer.appendChild(questionDiv);
+                    });
+
+                    const submitButton = document.createElement('button');
+                    submitButton.textContent = 'Submit Quiz';
+                    submitButton.onclick = function () {
+                        correctAnswers = [];
+                        wrongAnswers = [];
+                        let score = 0;
+
+                        questions.forEach((q, index) => {
+                            const selectedAnswer = document.querySelector(`input[name="question${index}"]:checked`);
+                            if (selectedAnswer && selectedAnswer.value === q.answer) {
+                                score++;
+                                correctAnswers.push(q.question);
+                            } else {
+                                wrongAnswers.push({ question: q.question, correctAnswer: q.answer });
+                            }
+                        });
+
+                        document.getElementById('score-container').innerHTML = `Your score is ${score} out of ${questions.length}.`;
+                    };
+                    quizContainer.appendChild(submitButton);
+                }
+
+                function downloadPDF() {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+
+                    doc.setFontSize(18);
+                    doc.text('Quiz Results: Exam Mode', 10, 10);
+                    doc.setFontSize(12);
+                    doc.text(`Score: ${correctAnswers.length} out of 50`, 10, 20);
+
+                    doc.text('Correct Answers:', 10, 30);
+                    correctAnswers.forEach((question, i) => {
+                        doc.text(`${i + 1}. ${question}`, 10, 40 + (i * 10));
+                    });
+
+                    if (wrongAnswers.length > 0) {
+                        doc.addPage();
+                        doc.setFontSize(18);
+                        doc.text('Incorrect Answers for Review', 10, 10);
+
+                        wrongAnswers.forEach((q, i) => {
+                            doc.setFontSize(12);
+                            doc.text(`${i + 1}. ${q.question}`, 10, 20 + (i * 20));
+                            doc.setFontSize(10);
+                            doc.text(`Correct Answer: ${q.correctAnswer}`, 10, 30 + (i * 20));
+                        });
+                    }
+
+                    doc.save('quiz_results.pdf');
+                }
+            </script>
+        </div>
+    </div>
+</body>
+</html>
