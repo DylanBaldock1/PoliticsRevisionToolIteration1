@@ -11,7 +11,67 @@ This should display the overview for the topic, include links to the different q
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Democracy and Participation</title>
 </head>
-<body>
+  <style>
+    body {
+            font-family: 'Nunito Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .view-toggle button {
+            background: none;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 5px;
+            font-size: 1em;
+        }
+
+        /* Default View (Normal) */
+        body.normal {
+            background-color: white;
+            color: black;
+        }
+
+        /* Dark View */
+        body.dark {
+            background-color: #333;
+            color: white;
+        }
+
+        /* Dyslexia-Friendly View */
+        body.dyslexia-friendly {
+            background-color: #44d8d9;
+            color: black;
+        }
+  </style>
+<bodyclass="normal">
+    <header>
+        <div class="nav">
+            <a href="main.html">Home</a>
+            <a href="index.html">Sign Out</a>
+        </div>
+        <div class="view-toggle">
+            <button onclick="setView('normal')">Normal</button>
+            <button onclick="setView('dark')">Dark</button>
+            <button onclick="setView('dyslexia-friendly')">Dyslexia Friendly</button>
+        </div>
+    </header>
 
   <h1>Specification: </h1>
   <ul>
@@ -49,7 +109,10 @@ This should display the overview for the topic, include links to the different q
     <h1>Quiz mode:</h1>
   <a href="./demoPartiQuiz">Click here to take me to quiz yourself!</a>
     <script>
-      
+        // Function to set the view mode
+        function setView(mode) {
+            document.body.className = mode;
+        }
     </script>
 </body>
 </html>
