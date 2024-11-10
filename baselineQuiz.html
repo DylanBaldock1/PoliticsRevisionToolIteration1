@@ -1,11 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Baseline</title>
     <style>
-
-        body {
+      body {
             font-family: 'Nunito Sans', sans-serif;
             margin: 0;
             padding: 0;
@@ -70,7 +68,8 @@
         }
     </style>
 </head>
-     <header>
+<body>
+    <header>
         <div class="nav">
             <a href="main.html">Home</a>
             <a href="index.html">Sign Out</a>
@@ -81,23 +80,21 @@
             <button onclick="setView('dyslexia-friendly')">Dyslexia Friendly</button>
         </div>
     </header>
-<body>
-    <div class="container">
-       
-        <div class="quiz-section">
-            <button onclick="startQuiz()">Start Baseline quiz</button>
 
+    <div class="container">
+        <div class="quiz-section">
+            <button onclick="startQuiz()">Start Baseline Quiz</button>
             <div id="quiz-container"></div> 
             <div id="score-container"></div>
             <button onclick="downloadPDF()">Download Results as PDF</button>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
             <script>
-                // Function to set the view mode
-        function setView(mode) {
-            document.body.className = mode;
-        }
-const baselineQuiz = [
-  {question: "What is the definition of democracy?", answer: "A system of government where citizens exercise power by voting."},
+                function setView(mode) {
+                    document.body.className = mode;
+                }
+
+                const baselineQuiz = [
+                    {question: "What is the definition of democracy?", answer: "A system of government where citizens exercise power by voting."},
   {question: "What is direct democracy?", answer: "A form of democracy where citizens directly participate in decision-making, rather than through elected representatives."},
   {question: "What is representative democracy?", answer: "A form of democracy where citizens elect representatives to make decisions on their behalf."},
   {question: "What is the main difference between direct and representative democracy?", answer: "Direct democracy involves direct citizen participation in decisions, while representative democracy involves electing representatives to make decisions."},
@@ -117,9 +114,8 @@ const baselineQuiz = [
   {question: "What is the significance of the 1832 Reform Act in UK history?", answer: "It expanded the electorate by lowering property requirements, marking a step towards broader suffrage."},
   {question: "What is civil liberties?", answer: "Basic rights and freedoms guaranteed to individuals, typically protected by law."},
   {question: "What does 'pluralism' mean in the context of democracy?", answer: "A system where multiple groups, opinions, and political parties coexist, allowing for a variety of viewpoints and interests."}
-];
+                ];
 
-// randomly shuffles the questions
                 let correctAnswers = [];
                 let wrongAnswers = [];
 
@@ -201,3 +197,4 @@ const baselineQuiz = [
     </div>
 </body>
 </html>
+
