@@ -136,12 +136,11 @@
 
                         // Generate three incorrect answers randomly
                         const incorrectAnswers = baselineQuiz
-                            .filter(item => item.answer !== q.answer) // Exclude the correct answer
-                            .map(item => item.answer) // Map to answer strings only
-                            .sort(() => 0.5 - Math.random()) // Shuffle the incorrect answers
-                            .slice(0, 3); // Take the first three as incorrect answers
+                            .filter(item => item.answer !== q.answer) 
+                            .map(item => item.answer)
+                            .sort(() => 0.5 - Math.random())
+                            .slice(0, 3); 
 
-                        // Shuffle all answer options (1 correct + 3 incorrect)
                         const answerOptions = [q.answer, ...incorrectAnswers].sort(() => 0.5 - Math.random());
 
                         answerOptions.forEach((answer) => {
