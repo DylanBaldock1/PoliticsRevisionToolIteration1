@@ -91,7 +91,6 @@
             <div id="score-container"></div>
             <button onclick="downloadPDF()">Download Results as PDF</button>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
             <script>
                 // Function to set the view mode
         function setView(mode) {
@@ -146,71 +145,77 @@ function randomlySelectQuestions() {
     return selectedQuestions;
 }
 
-// Start quiz and display all questions in the array
-function startQuiz() {
-    const questions = randomlySelectQuestions();
-    const quizContainer = document.getElementById('quiz-container');
-    quizContainer.innerHTML = '';
+/ function startQuiz() {
+                    const questions = randomlySelectQuestions();
+                    const quizContainer = document.getElementById('quiz-container');
+                    quizContainer.innerHTML = '';
 
-    questions.forEach((q, index) => {
-        const questionDiv = document.createElement('div');
-        questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
-        q.answers.forEach((answer, i) => {
-            const answerDiv = document.createElement('div');
-            answerDiv.innerHTML = `<input type="radio" name="question${index}" value="${answer}"> ${answer}`;
-            questionDiv.appendChild(answerDiv);
-        });
-        quizContainer.appendChild(questionDiv);
-    });
+                    questions.forEach((q, index) => {
+                        const questionDiv = document.createElement('div');
+                        questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
+                        q.answers = [q.answer, "Incorrect option 1", "Incorrect option 2", "Incorrect option 3"]
+                            .sort(() => 0.5 - Math.random());
 
-    const submitButton = document.createElement('button');
-    submitButton.textContent = 'Submit Quiz';
-    submitButton.onclick = function () {
-        let score = 0;
-        questions.forEach((q, index) => {
-            const selectedAnswer = document.querySelector(`input[name="question${index}"]:checked`);
-            if (selectedAnswer && selectedAnswer.value === q.correctAnswer) {
-                score++;
-            }
-        });
+                        q.answers.forEach((answer) => {
+                            const answerDiv = document.createElement('div');
+                            answerDiv.innerHTML = `<input type="radio" name="question${index}" value="${answer}"> ${answer}`;
+                            questionDiv.appendChild(answerDiv);
+                        });
+                        quizContainer.appendChild(questionDiv);
+                    });
 
-        const scoreContainer = document.getElementById('score-container');
-        scoreContainer.innerHTML = `Your score is ${score} out of ${questions.length}.`;
-    };
-    quizContainer.appendChild(submitButton);
-}
+                    const submitButton = document.createElement('button');
+                    submitButton.textContent = 'Submit Quiz';
+                    submitButton.onclick = function () {
+                        correctAnswers = [];
+                        wrongAnswers = [];
+                        let score = 0;
 
-        function downloadPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+                        questions.forEach((q, index) => {
+                            const selectedAnswer = document.querySelector(`input[name="question${index}"]:checked`);
+                            if (selectedAnswer && selectedAnswer.value === q.answer) {
+                                score++;
+                                correctAnswers.push(q.question);
+                            } else {
+                                wrongAnswers.push({ question: q.question, correctAnswer: q.answer });
+                            }
+                        });
 
-            doc.setFontSize(18);
-            doc.text('Quiz Results: Baseline Quiz', 10, 10);
-            doc.setFontSize(12);
-            doc.text(`Score: ${correctAnswers.length} out of 20`, 10, 20);
+                        document.getElementById('score-container').innerHTML = `Your score is ${score} out of ${questions.length}.`;
+                    };
+                    quizContainer.appendChild(submitButton);
+                }
 
-            doc.text('Correct Answers:', 10, 30);
-            correctAnswers.forEach((question, i) => {
-                doc.text(`${i + 1}. ${question}`, 10, 40 + (i * 10));
-            });
+                function downloadPDF() {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
 
-            if (wrongAnswers.length > 0) {
-                doc.addPage();
-                doc.setFontSize(18);
-                doc.text('Incorrect Answers for Retest', 10, 10);
+                    doc.setFontSize(18);
+                    doc.text('Quiz Results: Baseline Quiz', 10, 10);
+                    doc.setFontSize(12);
+                    doc.text(`Score: ${correctAnswers.length} out of ${baselineQuiz.length}`, 10, 20);
 
-                wrongAnswers.forEach((q, i) => {
-                    doc.text(`${i + 1}. ${q.question}`, 10, 20 + (i * 10));
-                });
-            }
+                    doc.text('Correct Answers:', 10, 30);
+                    correctAnswers.forEach((question, i) => {
+                        doc.text(`${i + 1}. ${question}`, 10, 40 + (i * 10));
+                    });
 
-            doc.save('quiz_results.pdf');
-        }
+                    if (wrongAnswers.length > 0) {
+                        doc.addPage();
+                        doc.setFontSize(18);
+                        doc.text('Incorrect Answers for Review', 10, 10);
+
+                        wrongAnswers.forEach((q, i) => {
+                            doc.setFontSize(12);
+                            doc.text(`${i + 1}. ${q.question}`, 10, 20 + (i * 10));
+                            doc.text(`Correct Answer: ${q.correctAnswer}`, 10, 30 + (i * 10));
+                        });
+                    }
+
+                    doc.save('quiz_results.pdf');
+                }
             </script>
         </div>
-
+    </div>
 </body>
 </html>
-
-
-
