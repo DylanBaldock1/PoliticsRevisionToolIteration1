@@ -291,9 +291,15 @@ This should display all the questions, and verify the answers. It will also outp
             doc.text(`Score: ${correctAnswers.length} out of 20`, 10, 20);
 
             doc.text('Correct Answers:', 10, 30);
-            correctAnswers.forEach((question, i) => {
-                doc.text(`${i + 1}. ${question}`, 10, 40 + (i * 10));
-            });
+
+             if (correctAnswers.length > 0) {
+                 doc.text(`${i + 1}. ${question}`, 10, 40 + (i * 10));
+             };
+
+             
+           // correctAnswers.forEach((question, i) => {
+           //     doc.text(`${i + 1}. ${question}`, 10, 40 + (i * 10));
+           // });
 
             if (wrongAnswers.length > 0) {
                 doc.addPage();
