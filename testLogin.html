@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In or Create Account</title>
     <style>
         #toggleFormLink {
             color: blue;
@@ -7,10 +10,6 @@
             text-decoration: underline;
         } 
     </style>
-<!-- WEBSITE TO TEST: https://dylanbaldock1.github.io/PoliticsRevisionToolIteration1.github.io/testLogin.html -->
-<head>
-    <meta charset="UTF-8">
-    <title>Sign In or Create Account</title>
 </head>
 <body>
 
@@ -94,10 +93,11 @@
         const users = getUsers();
 
         // Find matching user
-        const user = users.find(user => user.username = username & user.password = password);
+        const user = users.find(user => user.username === username && user.password === password);
 
         if (user) {
             alert(`Welcome back, ${user.firstName}!`);
+            // Redirect to main page or display success message
             window.location.href = "main.html"; // sends the user to the homepage
         } else {
             alert("Incorrect username or password. Please try again.");
