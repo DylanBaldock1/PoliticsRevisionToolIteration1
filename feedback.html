@@ -65,6 +65,9 @@
             const email = document.getElementById("email").value;
             const feedbackType = document.querySelector('input[name="feedbackType"]:checked').value;
             const message = document.getElementById("message").value;
+            if (message.length <= 0){
+                alert("Ensure message is greater than 0");
+            }
 
             emailjs.send("service_9di1hnr", "template_vivvaws", { //did have to use google to learn how to initialize
                 message: message
